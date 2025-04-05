@@ -191,8 +191,6 @@ def display_welcome():
         
         with st.expander("👨‍⚕️ Welcome to Your Virtual Medical Consultation", expanded=True):
             col1, col2 = st.columns([1, 3])
-            with col1:
-                st.image("https://www.svgrepo.com/show/340997/doctor.svg", width=100)
             with col2:
                 st.markdown("""
                 Hello! I'm your AI Medical Assistant. While I'm not a replacement for your doctor, 
