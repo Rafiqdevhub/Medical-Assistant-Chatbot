@@ -6,7 +6,6 @@ import time
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 from langchain_huggingface import HuggingFaceEndpoint
@@ -16,7 +15,6 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.callbacks import get_openai_callback
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
@@ -49,11 +47,12 @@ def load_llm(huggingface_repo_id: str) -> HuggingFaceEndpoint:
         try:
             llm = HuggingFaceEndpoint(
                 repo_id=huggingface_repo_id,
+                task="text-generation",
                 temperature=0.5,
+                timeout=REQUEST_TIMEOUT,
                 model_kwargs={
                     "token": get_hf_token(),
-                    "max_length": "512",
-                    "timeout": REQUEST_TIMEOUT
+                    "max_length": "512"
                 }
             )
             return llm
@@ -62,6 +61,10 @@ def load_llm(huggingface_repo_id: str) -> HuggingFaceEndpoint:
                 raise ModelConnectionError(f"Failed to load LLM after {MAX_RETRIES} attempts: {str(e)}")
             logger.warning(f"Attempt {attempt + 1} failed, retrying... Error: {str(e)}")
             time.sleep(RETRY_DELAY * (attempt + 1))
+    
+    # This line will never be reached due to the raise in the last iteration,
+    # but it satisfies the type checker
+    raise ModelConnectionError("Failed to load LLM")
 
 def set_custom_prompt() -> PromptTemplate:
     """Create an optimized prompt template"""
