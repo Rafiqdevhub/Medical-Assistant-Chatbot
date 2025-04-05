@@ -30,8 +30,8 @@ A sophisticated medical chatbot that provides accurate medical information using
 
 1. Clone the repository:
 ```bash
-git clone 
-cd 
+git clone https://github.com/Rafiqdevhub/Medical-Assistant-Chatbot.git
+cd Medical-Assistant-Chatbot
 ```
 
 2. Install dependencies:
